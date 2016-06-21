@@ -3,7 +3,6 @@
 use Doctrine\DBAL\Statement as DcStatement;
 use Facile\DoctrineMySQLComeBack\Doctrine\DBAL\Statement;
 use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * Class StatementTest
@@ -22,7 +21,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     public function test_execute()
     {
         $sql = 'SELECT 1';
-        $dcStatement = $this->prophesize(DcStatement::class);
+        $dcStatement = $this->prophesize('\Doctrine\DBAL\Statement');
         $dcStatement->execute(["test" => 1])->shouldBeCalledTimes(1)->willReturn(true);
 
         $connection = $this->mockBaseConnection($sql, $dcStatement->reveal());
@@ -36,7 +35,7 @@ class StatementTest extends \PHPUnit_Framework_TestCase
     public function test_execute_gone_away_not_retrayable()
     {
         $sql = 'SELECT 1';
-        $dcStatement = $this->prophesize(DcStatement::class);
+        $dcStatement = $this->prophesize('\Doctrine\DBAL\Statement');
         $dcStatement->execute(["test" => 1])->willThrow(new \Exception('test'));
 
         $connection = $this->mockBaseConnection($sql, $dcStatement->reveal());
